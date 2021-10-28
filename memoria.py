@@ -12,6 +12,8 @@ writer = Turtle(visible=False)
 
 def square(x, y):
     "Draw white square with black outline at (x, y)."
+    up()
+    goto(x, y)
     down()
     color('black', 'white')
     begin_fill()
