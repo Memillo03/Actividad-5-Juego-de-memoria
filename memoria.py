@@ -1,14 +1,19 @@
 from random import *
+from random import randrange
 from turtle import *
 
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
+#tiles = list(range(32)) * 2
 state = {'mark': None, 'Taps': 0}
 hide = [True] * 64
 
 writer = Turtle(visible=False)
+tiles = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+         "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
+         "Z", "#", "%", "&", "$", "*"]*2
+
 
 def square(x, y):
     "Draw white square with black outline at (x, y)."
@@ -43,7 +48,7 @@ def tap(x, y):
     # se suma 1 por cada tap al contador taps
     state['Taps'] += 1
 
-    # Si mark es none se le asigna un índice inicial 
+    # Si mark es none se le asigna un índice inicial
     # Si índice mark es igual al tile seleccionado se le asigna ese número, si no uno diferente
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
@@ -62,7 +67,7 @@ def draw():
     stamp()
 
     for count in range(64):
-        # Se cubren los tiles con la imagen para los que estén escondidos 
+        # Se cubren los tiles con la imagen para los que estén escondidos
         if hide[count]:
             x, y = xy(count)
             square(x, y)
@@ -73,17 +78,17 @@ def draw():
         # se marcan los cuadros no marcados
         x, y = xy(mark)
         up()
-        goto(x+25.5, y)
-        color('black')
-        write(tiles[mark],align="center",font=('Arial', 30, 'normal'))
-        
+        goto(x + 25.5, y)
+        colormode(255)
+        color((randrange(255), randrange(255), randrange(255)))
+        write(tiles[mark], align="center", font=('Arial', 30, 'normal'))
 
     # Si todas las tiles ya están ocultas ("imagen completa") se termina el juego
     if not any(hide):
         # Se muestra el conteo total de taps en terminal al terminar juego
         print("Total taps: ", state["Taps"])
     else:
-        update() # actualización del tablero
+        update()  # actualización del tablero
         ontimer(draw, 100)
 
 
@@ -98,4 +103,7 @@ writer.color('black')
 writer.write(state['Taps'])
 onscreenclick(tap)
 draw()
+done()
+done()
+done()
 done()
