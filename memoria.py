@@ -5,14 +5,13 @@ from freegames import path
 
 car = path('car.gif')
 tiles = list(range(32)) * 2
-state = {'mark': None}
+state = {'mark': None, 'Taps': 0}
 hide = [True] * 64
 
+writer = Turtle(visible=False)
 
 def square(x, y):
     "Draw white square with black outline at (x, y)."
-    up()
-    goto(x, y)
     down()
     color('black', 'white')
     begin_fill()
@@ -36,10 +35,18 @@ def tap(x, y):
     "Update mark and hidden tiles based on tap."
     spot = index(x, y)
     mark = state['mark']
+    writer.undo()
+    # se muestra en pantalla el "estado" de la variable taps
+    writer.write(state['Taps'])
+    # se suma 1 por cada tap al contador taps
+    state['Taps'] += 1
 
+    # Si mark es none se le asigna un índice inicial 
+    # Si índice mark es igual al tile seleccionado se le asigna ese número, si no uno diferente
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
     else:
+        # Asignación cuando cambian índices pero no número
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
@@ -53,6 +60,7 @@ def draw():
     stamp()
 
     for count in range(64):
+        # Se cubren los tiles con la imagen para los que estén escondidos 
         if hide[count]:
             x, y = xy(count)
             square(x, y)
@@ -60,21 +68,31 @@ def draw():
     mark = state['mark']
 
     if mark is not None and hide[mark]:
+        # se marcan los cuadros no marcados
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
+        goto(x + 2, y) # condición de encontrado
         color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+        write(tiles[mark], font=('Arial', 30, 'normal')) 
 
-    update()
-    ontimer(draw, 100)
+    # Si todas las tiles ya están ocultas ("imagen completa") se termina el juego
+    if not any(hide):
+        # Se muestra el conteo total de taps en terminal al terminar juego
+        print("Total taps: ", state["Taps"])
+    else:
+        update() # actualización del tablero
+        ontimer(draw, 100)
 
 
 shuffle(tiles)
-setup(420, 420, 370, 0)
+setup(500, 420, 370, 0)
 addshape(car)
 hideturtle()
 tracer(False)
+# se acomoda la posición del contador dentro del juego y su color
+writer.goto(220, 160)
+writer.color('black')
+writer.write(state['Taps'])
 onscreenclick(tap)
 draw()
 done()
