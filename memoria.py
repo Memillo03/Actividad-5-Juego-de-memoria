@@ -73,9 +73,10 @@ def draw():
         # se marcan los cuadros no marcados
         x, y = xy(mark)
         up()
-        goto(x + 2, y) # condición de encontrado
+        goto(x+25.5, y)
         color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal')) 
+        write(tiles[mark],align="center",font=('Arial', 30, 'normal'))
+        
 
     # Si todas las tiles ya están ocultas ("imagen completa") se termina el juego
     if not any(hide):
