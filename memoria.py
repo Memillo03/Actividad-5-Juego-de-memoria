@@ -75,12 +75,15 @@ def draw():
     mark = state['mark']
 
     if mark is not None and hide[mark]:
-        # se marcan los cuadros no marcados
+        # Se marcan los cuadros no marcados
         x, y = xy(mark)
         up()
+        # Se centran los numeros utilizando un factor de 25.5 para poder utilizar el align="center"
         goto(x + 25.5, y)
+        # Se le agrega color a los números/letras
         colormode(255)
         color((randrange(255), randrange(255), randrange(255)))
+        #Se centran los números en sus respectivas tiles
         write(tiles[mark], align="center", font=('Arial', 30, 'normal'))
 
     # Si todas las tiles ya están ocultas ("imagen completa") se termina el juego
